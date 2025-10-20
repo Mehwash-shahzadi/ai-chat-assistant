@@ -13,15 +13,7 @@
 
 [🚀 Live Demo](#) | [📖 Documentation](#features) | [🐛 Report Bug](https://github.com/Mehwash-Shahzadi/ai-assistant/issues)
 
-### 🖼️ AI Assistant Demo
-
-  <p align="center">
-  <img src="https://raw.githubusercontent.com/Mehwash-shahzadi/ai-chat-assistant/main/screenshots/chat-interface.png" width="80%" alt="Chat Interface"/>
-  </p>
-
-  <p align="center">
-  <img src="https://raw.githubusercontent.com/Mehwash-shahzadi/ai-chat-assistant/main/screenshots/model-selection.png" width="80%" alt="Model Selection"/>
-  </p>
+![AI Assistant Demo](https://via.placeholder.com/800x400/0E1117/FFFFFF?text=AI+Chat+Assistant+Demo)
 
 </div>
 
