@@ -11,7 +11,7 @@
 
 **A modern, free, and open-source AI chat application with multiple models and real-time responses.**
 
-[🚀 Live Demo](#) | [📖 Documentation](#features) | [🐛 Report Bug](https://github.com/yourusername/ai-assistant/issues)
+[🚀 Live Demo](#) | [📖 Documentation](#features) | [🐛 Report Bug](https://github.com/Mehwash-Shahzadi/ai-assistant/issues)
 
 ![AI Assistant Demo](https://via.placeholder.com/800x400/0E1117/FFFFFF?text=AI+Chat+Assistant+Demo)
 
@@ -46,15 +46,18 @@
       <br>Adjust response length & style
     </td>
     <td align="center">
-      <img src="https://img.icons8.com/fluency/96/000000/open-source.png" width="60"/>
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/opensourceinitiative.svg"     width="60"/>
       <br><b>🆓 100% Free</b>
       <br>Open-source & free to use
     </td>
     <td align="center">
-      <img src="https://img.icons8.com/fluency/96/000000/user-interface.png" width="60"/>
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/materialdesign.svg" width="60"/>
       <br><b>🎨 Clean UI</b>
       <br>Modern & intuitive interface
     </td>
+
+    </td>
+
   </tr>
 </table>
 
@@ -66,11 +69,11 @@
 
 ### Chat Interface
 
-![Chat Demo](https://via.placeholder.com/600x400/262730/FFFFFF?text=Chat+Interface+Screenshot)
+![Chat Demo](<(screenshots/chat-interface.png)>)
 
 ### Model Selection
 
-![Model Selection](https://via.placeholder.com/600x400/262730/FFFFFF?text=Model+Selection+Screenshot)
+![Model Selection](screenshots/model-selection.png)
 
 </div>
 
@@ -320,10 +323,6 @@ Contributions are what make the open-source community amazing! Any contributions
 
 ---
 
-## 📝 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
 ---
 
 ## 🙏 Acknowledgments
@@ -332,22 +331,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Streamlit](https://streamlit.io) - For the beautiful frontend framework
 - [FastAPI](https://fastapi.tiangolo.com) - For the robust backend framework
 - [Icons8](https://icons8.com) - For beautiful icons
-
----
-
-## 📞 Contact & Support
-
-<div align="center">
-
-**Have questions? Need help?**
-
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yourusername)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:your.email@example.com)
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/yourusername)
-
-**⭐ Star this repo if you find it helpful!**
-
-</div>
 
 ---
 
