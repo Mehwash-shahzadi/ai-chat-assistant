@@ -11,19 +11,12 @@
 
 **A modern, free, and open-source AI chat application with multiple models and real-time responses.**
 
-## 🚀 Quick Links
+[🚀 Live Demo](#) | [📖 Documentation](#features) | [🐛 Report Bug](https://github.com/Mehwash-Shahzadi/ai-assistant/issues)
 
-[🚀 Live Demo](#) |
-[📖 Documentation](#features) |
-[🐛 Report Bug](https://github.com/Mehwash-shahzadi/ai-chat-assistant/issues)
+![AI Assistant Demo](
+![Chat Interface](screenshots/chat-interface.png)
 
----
-
-### 🖼️ AI Assistant Demo
-
-![Chat Interface](https://raw.githubusercontent.com/Mehwash-shahzadi/ai-chat-assistant/main/screenshots/chat-interface.png)
-
-![Model Selection](https://raw.githubusercontent.com/Mehwash-shahzadi/ai-chat-assistant/main/screenshots/model-selection.png)
+![Model Selection](screenshots/model-selection.png))
 
 </div>
 
