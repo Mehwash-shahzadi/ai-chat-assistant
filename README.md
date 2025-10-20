@@ -69,7 +69,7 @@
 
 ### Chat Interface
 
-![Chat Demo](<(screenshots/chat-interface.png)>)
+![Chat Demo](screenshots/chat-interface.png)
 
 ### Model Selection
 
