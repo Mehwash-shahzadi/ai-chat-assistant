@@ -89,7 +89,7 @@
 1️⃣ **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/ai-chat-assistant.git
+git clone https://github.com/Mehwash-Shahzadi/ai-chat-assistant.git
 cd ai-chat-assistant
 ```
 
@@ -353,7 +353,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <div align="center">
 
-### Made with ❤️ by [Your Name]
+### Made with ❤️ by [Mehwash Shahzadi]
 
 **© 2025 AI Chat Assistant. All rights reserved.**
 
