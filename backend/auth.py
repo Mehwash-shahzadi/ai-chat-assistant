@@ -3,30 +3,55 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from typing import Optional
 import secrets
-import hashlib
+import bcrypt
 from datetime import datetime, timedelta
 
 # Security setup
 security = HTTPBearer()
+# ====================================================================
+# SESSION-BASED AUTHENTICATION SYSTEM (STATEFUL)
+# ====================================================================
+# This authentication system uses server-side sessions.
+# When a user logs in:
+#   1. The server creates a random token (like a session ID).
+#   2. The token is stored in the SESSIONS dictionary with user info.
+#   3. The token is returned to the client.
+#   4. The client must send this token with every request.
+# The server validates tokens by checking them in the SESSIONS dict.
+# If the token exists, the user is authenticated.
+# If not, the session has expired or the user is logged out.
+# =====================================================================
 
-# ============================================================================
-# USER DATABASE (Simple - for demo)
-# In production, use real database!
-# ============================================================================
 
-# Hash passwords for security
+# ======================================================================
+# USER DATABASE (Professional with Bcrypt)
+# =======================================================================
+
 def hash_password(password: str) -> str:
-    """Simple password hashing"""
-    return hashlib.sha256(password.encode()).hexdigest()
+    """Hash password using bcrypt - Industry standard!"""
+    # Generate salt and hash password
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
 
-# Demo users (username: password)
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify password against hashed version"""
+    return bcrypt.checkpw(
+        plain_password.encode('utf-8'),
+        hashed_password.encode('utf-8')
+    )
+
+# Pre-hashed passwords for demo users
+# To add new user: print(hash_password("your_password"))
 USERS = {
     "demo": hash_password("demo123"),
     "admin": hash_password("admin123"),
-    "user": hash_password("password")
+    "user": hash_password("password"),
+    # Add more users here
 }
 
-# Active sessions (token: username)
+
+# Active sessions (token: user_data)
 SESSIONS = {}
 
 # ============================================================================
@@ -43,34 +68,48 @@ class LoginResponse(BaseModel):
     message: str
     username: Optional[str] = None
 
+class UserInfo(BaseModel):
+    username: str
+    login_time: str
+    session_duration: str
+
 # ============================================================================
 # AUTHENTICATION FUNCTIONS
 # ============================================================================
 
 def create_token() -> str:
-    """Generate secure random token"""
+    """Generate cryptographically secure random token"""
     return secrets.token_urlsafe(32)
 
 def authenticate_user(username: str, password: str) -> Optional[str]:
     """
-    Authenticate user and return token if successful
+    Authenticate user with bcrypt password verification
     Returns: token if success, None if failed
     """
-    hashed_password = hash_password(password)
+    # Check if user exists
+    if username not in USERS:
+        # Prevent timing attacks by still checking password
+        bcrypt.checkpw(b"dummy", bcrypt.gensalt())
+        return None
     
-    if username in USERS and USERS[username] == hashed_password:
-        # Create session token
+    # Verify password using bcrypt
+    if verify_password(password, USERS[username]):
+        # Create secure session token
         token = create_token()
         SESSIONS[token] = {
             "username": username,
-            "created_at": datetime.now()
+            "created_at": datetime.now(),
+            "last_activity": datetime.now()
         }
+        print(f"✅ Authentication successful: {username}")
         return token
+    
+    print(f"❌ Authentication failed: {username}")
     return None
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
     """
-    Verify token and return username
+    Verify JWT-like token and return username
     Used as dependency in protected routes
     """
     token = credentials.credentials
@@ -78,26 +117,65 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) 
     if token not in SESSIONS:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired token"
+            detail="Invalid or expired session. Please login again."
         )
     
-    # Return username
+    # Update last activity
+    SESSIONS[token]["last_activity"] = datetime.now()
+    
+    # Check if session is too old (24 hours)
+    session_age = datetime.now() - SESSIONS[token]["created_at"]
+    if session_age > timedelta(hours=24):
+        del SESSIONS[token]
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Session expired. Please login again."
+        )
+    
     return SESSIONS[token]["username"]
 
 def logout_user(token: str) -> bool:
-    """Remove token from sessions"""
+    """Remove token from active sessions"""
     if token in SESSIONS:
+        username = SESSIONS[token]["username"]
         del SESSIONS[token]
+        print(f"🚪 User logged out: {username}")
         return True
     return False
 
+def get_user_info(token: str) -> Optional[UserInfo]:
+    """Get user session information"""
+    if token not in SESSIONS:
+        return None
+    
+    session = SESSIONS[token]
+    created = session["created_at"]
+    duration = datetime.now() - created
+    
+    return UserInfo(
+        username=session["username"],
+        login_time=created.strftime("%Y-%m-%d %H:%M:%S"),
+        session_duration=str(duration).split('.')[0]  # Remove microseconds
+    )
+
 # ============================================================================
-# HELPER FUNCTIONS
+# ADMIN FUNCTIONS
 # ============================================================================
 
 def get_active_users() -> int:
     """Get count of active sessions"""
     return len(SESSIONS)
+
+def get_all_sessions() -> list:
+    """Get all active sessions (admin only)"""
+    return [
+        {
+            "username": data["username"],
+            "login_time": data["created_at"].strftime("%Y-%m-%d %H:%M:%S"),
+            "last_activity": data["last_activity"].strftime("%H:%M:%S")
+        }
+        for token, data in SESSIONS.items()
+    ]
 
 def cleanup_old_sessions(max_age_hours: int = 24):
     """Remove sessions older than max_age_hours"""
@@ -107,4 +185,61 @@ def cleanup_old_sessions(max_age_hours: int = 24):
         if (now - data["created_at"]).total_seconds() > max_age_hours * 3600
     ]
     for token in expired:
+        username = SESSIONS[token]["username"]
         del SESSIONS[token]
+        print(f"🧹 Cleaned up expired session: {username}")
+    
+    return len(expired)
+
+# ============================================================================
+# UTILITY FUNCTIONS
+# ============================================================================
+
+def add_user(username: str, password: str) -> bool:
+    """
+    Add new user to database
+    Usage: add_user("newuser", "securepassword")
+    """
+    if username in USERS:
+        return False
+    
+    USERS[username] = hash_password(password)
+    print(f"➕ New user added: {username}")
+    return True
+
+def change_password(username: str, old_password: str, new_password: str) -> bool:
+    """Change user password"""
+    if username not in USERS:
+        return False
+    
+    if not verify_password(old_password, USERS[username]):
+        return False
+    
+    USERS[username] = hash_password(new_password)
+    print(f"🔄 Password changed for: {username}")
+    return True
+
+# ============================================================================
+# FOR TESTING - Generate hashed passwords
+# ============================================================================
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("🔐 PASSWORD HASH GENERATOR")
+    print("=" * 60)
+    
+    test_passwords = {
+        "demo123": hash_password("demo123"),
+        "admin123": hash_password("admin123"),
+        "password": hash_password("password")
+    }
+    
+    print("\n📝 Hashed passwords:")
+    for pwd, hashed in test_passwords.items():
+        print(f"\nPassword: {pwd}")
+        print(f"Hash: {hashed}")
+        print(f"Verify: {verify_password(pwd, hashed)}")
+    
+    print("\n" + "=" * 60)
+    print("✅ Bcrypt authentication is working!")
+    print("=" * 60)
