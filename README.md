@@ -67,6 +67,10 @@
 
 <div align="center">
 
+### Sign In Page
+
+![Sign In Page](screenshots/demo.png)
+
 ### Chat Interface
 
 ![Chat Demo](screenshots/chat-interface.png)
