@@ -217,15 +217,15 @@ if len(st.session_state.messages) == 0:
             st.session_state.process_question = "Tell me an interesting tech fact"
     
     with col2:
-        if st.button("😄 Joke", use_container_width=True):
+        if st.button("😄 programming Joke", use_container_width=True):
             st.session_state.process_question = "Tell me a programming joke"
     
     with col3:
-        if st.button("🎯 Tip", use_container_width=True):
+        if st.button("🎯  interesting Tip", use_container_width=True):
             st.session_state.process_question = "Give me a coding tip"
     
     with col4:
-        if st.button("🧠 Concept", use_container_width=True):
+        if st.button("🧠  AI Concept", use_container_width=True):
             st.session_state.process_question = "Explain an AI concept"
     
     st.info("💡 **Tip:** Click a button or type your question below!")
