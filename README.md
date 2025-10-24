@@ -28,6 +28,18 @@ Whether you're learning AI development, building a chatbot, or just exploring la
 - **Security:** Bcrypt password hashing
 - **Language:** Python 3.8+
 
+### Sign In Page
+
+![Sign In Page](screenshots/demo.png)
+
+### Chat Interface
+
+![Chat Demo](screenshots/chat-interface.png)
+
+### Model Selection
+
+![Model Selection](screenshots/model-selection.png)
+
 ## Prerequisites
 
 Before you start, make sure you have:
