@@ -54,7 +54,7 @@ class ModelSwitchRequest(BaseModel):
 def read_root():
     """Root endpoint"""
     return {
-        "message": "AI Assistant API with Authentication 🔐",
+        "message": "AI Assistant API with Authentication ",
         "status": "active",
         "version": "1.0.0",
         "active_users": get_active_users()
@@ -82,12 +82,12 @@ def login(request: LoginRequest):
     - username: demo, password: demo123
     - username: admin, password: admin123
     """
-    print(f"🔐 Login attempt: {request.username}")
+    print(f" Login attempt: {request.username}")
     
     token = authenticate_user(request.username, request.password)
     
     if token:
-        print(f"✅ Login successful: {request.username}")
+        print(f" Login successful: {request.username}")
         return LoginResponse(
             success=True,
             token=token,
@@ -95,7 +95,7 @@ def login(request: LoginRequest):
             username=request.username
         )
     else:
-        print(f"❌ Login failed: {request.username}")
+        print(f" Login failed: {request.username}")
         raise HTTPException(
             status_code=401,
             detail="Invalid username or password"
@@ -127,27 +127,27 @@ def get_models(username: str = Depends(verify_token)):
 def query_llm(request: QueryRequest, username: str = Depends(verify_token)):
     """Send query to LLM - PROTECTED"""
     try:
-        print(f"📨 {username} sent query: {request.prompt[:50]}...")
+        print(f" {username} sent query: {request.prompt[:50]}...")
         
         response = llm_service.generate_response(
             request.prompt,
             request.max_tokens
         )
         
-        print(f"✅ Response generated for {username}")
+        print(f" Response generated for {username}")
         
         return QueryResponse(
             response=response,
             model=llm_service.current_model
         )
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/switch-model")
 def switch_model(request: ModelSwitchRequest, username: str = Depends(verify_token)):
     """Switch AI model - PROTECTED"""
-    print(f"🔄 {username} switching to {request.model_name}")
+    print(f" {username} switching to {request.model_name}")
     result = llm_service.switch_model(request.model_name)
     return {
         "message": result,

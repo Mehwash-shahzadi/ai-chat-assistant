@@ -8,7 +8,7 @@ load_dotenv()
 class LLMService:
     """Service to handle multiple HuggingFace models"""
     
-    # ✅ THESE MODELS ACTUALLY WORK (Tested and Free!)
+    #  THESE MODELS ACTUALLY WORK (Tested and Free!)
     MODELS = {
         "mistral": "mistralai/Mistral-7B-Instruct-v0.2",
         "zephyr": "HuggingFaceH4/zephyr-7b-beta",
@@ -18,25 +18,25 @@ class LLMService:
     def __init__(self):
         self.token = os.getenv("HUGGINGFACE_API_TOKEN")
         if not self.token:
-            raise ValueError("❌ HUGGINGFACE_API_TOKEN not found in .env file!")
+            raise ValueError(" HUGGINGFACE_API_TOKEN not found in .env file!")
         
         self.client = InferenceClient(token=self.token)
         self.current_model = "mistral"
-        print(f"✅ Service initialized with model: {self.current_model}")
+        print(f" Service initialized with model: {self.current_model}")
     
     def switch_model(self, model_name: str):
         """Switch between different models"""
         if model_name in self.MODELS:
             self.current_model = model_name
-            print(f"✅ Switched to {model_name}")
+            print(f" Switched to {model_name}")
             return f"Switched to {model_name}"
-        print(f"❌ Model {model_name} not found")
+        print(f" Model {model_name} not found")
         return "Model not found"
     
     def generate_response(self, prompt: str, max_tokens: int = 512) -> str:
         """Generate response using current model"""
         try:
-            print(f"🤔 Sending request to {self.current_model}...")
+            print(f" Sending request to {self.current_model}...")
             
             # 🔧 FIX: Use chat_completion instead of text_generation
             response = self.client.chat_completion(
@@ -49,12 +49,12 @@ class LLMService:
             # Extract the message content from the response
             answer = response.choices[0].message.content
             
-            print(f"✅ Got response from {self.current_model}")
+            print(f" Got response from {self.current_model}")
             return answer.strip()
             
         except Exception as e:
             error_msg = f"Error with {self.current_model}: {str(e)}"
-            print(f"❌ {error_msg}")
+            print(f" {error_msg}")
             return error_msg
     
     def get_available_models(self) -> List[str]:
@@ -69,7 +69,7 @@ class LLMService:
 # Test the service
 if __name__ == "__main__":
     print("=" * 60)
-    print("🧪 TESTING LLM SERVICE")
+    print(" TESTING LLM SERVICE")
     print("=" * 60)
     
     try:
@@ -77,8 +77,8 @@ if __name__ == "__main__":
         llm = LLMService()
         
         # Show available models
-        print(f"\n📋 Available models: {llm.get_available_models()}")
-        print(f"📍 Current model: {llm.get_current_model()}")
+        print(f"\n Available models: {llm.get_available_models()}")
+        print(f" Current model: {llm.get_current_model()}")
         
         # Test 1: Mistral
         print("\n" + "=" * 60)
@@ -110,11 +110,11 @@ if __name__ == "__main__":
         print(f"Answer: {response3}")
         
         print("\n" + "=" * 60)
-        print("✅ ALL TESTS COMPLETED SUCCESSFULLY!")
+        print(" ALL TESTS COMPLETED SUCCESSFULLY!")
         print("=" * 60)
         
     except Exception as e:
-        print(f"\n❌ ERROR: {e}")
+        print(f"\n ERROR: {e}")
         print("\n💡 Check that:")
         print("   1. Your HUGGINGFACE_TOKEN is in backend/.env")
         print("   2. Your token is valid (check https://huggingface.co/settings/tokens)")

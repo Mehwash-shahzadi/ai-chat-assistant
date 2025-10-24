@@ -207,7 +207,7 @@ st.divider()
 
 # Quick actions (when no messages)
 if len(st.session_state.messages) == 0:
-    st.markdown("### ⚡ Quick Actions")
+    st.markdown("###  Quick Actions")
     st.caption("Start with a quick question:")
     
     col1, col2, col3, col4 = st.columns(4)
