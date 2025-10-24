@@ -25,7 +25,7 @@ def show_login_page():
     with col2:
         # Login card style
         with st.container():
-            st.markdown("### 🔐 Sign In")
+            st.markdown("###  Sign In")
             
             with st.form("login_form", clear_on_submit=True):
                 username = st.text_input(
@@ -61,14 +61,14 @@ def show_login_page():
                 remember = st.checkbox("Remember me for 24 hours", key="remember_me")
                 
                 submit = st.form_submit_button(
-                    "🚀 Sign In",
+                    " Sign In",
                     use_container_width=True,
                     type="primary"
                 )
                 
                 if submit:
                     if username and password:
-                        with st.spinner("🔐 Authenticating..."):
+                        with st.spinner(" Authenticating..."):
                             try:
                                 response = requests.post(
                                     f"{API_URL}/login",
@@ -87,48 +87,48 @@ def show_login_page():
                                     st.session_state.username = data["username"]
                                     st.session_state.authenticated = True
                                     
-                                    st.success(f"✅ Welcome back, {data['username']}!")
+                                    st.success(f" Welcome back, {data['username']}!")
                                     st.balloons()
                                     st.rerun()
                                     
                                 elif response.status_code == 401:
-                                    st.error("❌ Invalid username or password")
+                                    st.error(" Invalid username or password")
                                 else:
-                                    st.error("⚠️ Login failed. Please try again.")
+                                    st.error(" Login failed. Please try again.")
                             
                             except requests.exceptions.ConnectionError:
-                                st.error("⚠️ **Backend not running!**")
+                                st.error(" **Backend not running!**")
                                 st.info("Start backend: `uvicorn backend.main:app --reload`")
                             except requests.exceptions.Timeout:
-                                st.error("⚠️ Request timed out. Please try again.")
+                                st.error(" Request timed out. Please try again.")
                             except Exception as e:
-                                st.error(f"❌ Error: {str(e)}")
+                                st.error(f" Error: {str(e)}")
                     else:
-                        st.warning("⚠️ Please enter both username and password")
+                        st.warning(" Please enter both username and password")
             
             st.markdown("<br>", unsafe_allow_html=True)
             
             # Security info
-            with st.expander("🔒 Security Information"):
+            with st.expander(" Security Information"):
                 st.markdown("""
                 **Your security is our priority:**
                 
-                ✅ Passwords encrypted with **bcrypt**
+                  Passwords encrypted with **bcrypt**
                 
-                ✅ Secure session tokens
+                  Secure session tokens
                 
-                ✅ 24-hour automatic logout
+                  24-hour automatic logout
                 
-                ✅ No password storage in plaintext
+                  No password storage in plaintext
                 
-                ✅ Industry-standard security practices
+                  Industry-standard security practices
                 """)
     
     # Footer
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown("""
         <div style='text-align: center; color: #666; font-size: 0.9em;'>
-            <p>🔐 Protected by bcrypt encryption | © 2025 AI Chat Assistant</p>
+            <p> Protected by bcrypt encryption | © 2025 AI Chat Assistant</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -149,5 +149,5 @@ def logout():
     for key in list(st.session_state.keys()):
         del st.session_state[key]
     
-    st.success("✅ Logged out successfully")
+    st.success(" Logged out successfully")
     st.rerun()
