@@ -38,7 +38,7 @@ class LLMService:
         try:
             print(f" Sending request to {self.current_model}...")
             
-            # 🔧 FIX: Use chat_completion instead of text_generation
+            #  FIX: Use chat_completion instead of text_generation
             response = self.client.chat_completion(
                 messages=[{"role": "user", "content": prompt}],
                 model=self.MODELS[self.current_model],
@@ -115,7 +115,7 @@ if __name__ == "__main__":
         
     except Exception as e:
         print(f"\n ERROR: {e}")
-        print("\n💡 Check that:")
+        print("\n Check that:")
         print("   1. Your HUGGINGFACE_TOKEN is in backend/.env")
         print("   2. Your token is valid (check https://huggingface.co/settings/tokens)")
         print("   3. You're connected to internet")

@@ -117,7 +117,7 @@ def logout(token: str):
 @app.get("/models")
 def get_models(username: str = Depends(verify_token)):
     """Get available models - PROTECTED"""
-    print(f"📋 {username} requested models")
+    print(f" {username} requested models")
     return {
         "models": llm_service.get_available_models(),
         "current": llm_service.get_current_model()

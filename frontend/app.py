@@ -103,7 +103,7 @@ def process_user_question(question, max_tokens):
 # Sidebar
 with st.sidebar:
     # Header
-    st.title("🤖 AI Assistant")
+    st.title(" AI Assistant")
     
     st.divider()
     
@@ -118,7 +118,7 @@ with st.sidebar:
     st.divider()
     
     # Model selection
-    st.subheader("🤖 AI Model")
+    st.subheader(" AI Model")
     
     available_models, current_model = get_models(st.session_state.token)
     st.session_state.current_model = current_model
@@ -176,7 +176,7 @@ with st.sidebar:
     with col1:
         st.metric(" Total", len(st.session_state.messages))
     with col2:
-        st.metric("🤖 Model", st.session_state.current_model.upper()[:3])
+        st.metric(" Model", st.session_state.current_model.upper()[:3])
     
     st.divider()
     
@@ -200,7 +200,7 @@ with st.sidebar:
     st.caption("© 2025 AI Assistant")
 
 # Main area
-st.title("🤖 AI Chat Assistant")
+st.title(" AI Chat Assistant")
 st.caption(f" Chatting with **{st.session_state.current_model.title()}**")
 
 st.divider()

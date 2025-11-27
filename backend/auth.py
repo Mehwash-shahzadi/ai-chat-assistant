@@ -24,7 +24,7 @@ security = HTTPBearer()
 
 
 # ======================================================================
-# USER DATABASE (Professional with Bcrypt)
+# USER DATABASE 
 # =======================================================================
 
 def hash_password(password: str) -> str:
@@ -101,10 +101,10 @@ def authenticate_user(username: str, password: str) -> Optional[str]:
             "created_at": datetime.now(),
             "last_activity": datetime.now()
         }
-        print(f"✅ Authentication successful: {username}")
+        print(f"Authentication successful: {username}")
         return token
     
-    print(f"❌ Authentication failed: {username}")
+    print(f"Authentication failed: {username}")
     return None
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
@@ -139,7 +139,7 @@ def logout_user(token: str) -> bool:
     if token in SESSIONS:
         username = SESSIONS[token]["username"]
         del SESSIONS[token]
-        print(f"🚪 User logged out: {username}")
+        print(f" User logged out: {username}")
         return True
     return False
 
@@ -187,7 +187,7 @@ def cleanup_old_sessions(max_age_hours: int = 24):
     for token in expired:
         username = SESSIONS[token]["username"]
         del SESSIONS[token]
-        print(f"🧹 Cleaned up expired session: {username}")
+        print(f" Cleaned up expired session: {username}")
     
     return len(expired)
 
@@ -204,7 +204,7 @@ def add_user(username: str, password: str) -> bool:
         return False
     
     USERS[username] = hash_password(password)
-    print(f"➕ New user added: {username}")
+    print(f" New user added: {username}")
     return True
 
 def change_password(username: str, old_password: str, new_password: str) -> bool:
@@ -216,7 +216,7 @@ def change_password(username: str, old_password: str, new_password: str) -> bool
         return False
     
     USERS[username] = hash_password(new_password)
-    print(f"🔄 Password changed for: {username}")
+    print(f"Password changed for: {username}")
     return True
 
 # ============================================================================
@@ -225,7 +225,7 @@ def change_password(username: str, old_password: str, new_password: str) -> bool
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("🔐 PASSWORD HASH GENERATOR")
+    print(" PASSWORD HASH GENERATOR")
     print("=" * 60)
     
     test_passwords = {
@@ -234,12 +234,12 @@ if __name__ == "__main__":
         "password": hash_password("password")
     }
     
-    print("\n📝 Hashed passwords:")
+    print("\nHashed passwords:")
     for pwd, hashed in test_passwords.items():
         print(f"\nPassword: {pwd}")
         print(f"Hash: {hashed}")
         print(f"Verify: {verify_password(pwd, hashed)}")
     
     print("\n" + "=" * 60)
-    print("✅ Bcrypt authentication is working!")
+    print("Bcrypt authentication is working!")
     print("=" * 60)
